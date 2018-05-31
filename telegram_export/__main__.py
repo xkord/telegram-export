@@ -12,8 +12,10 @@ import re
 from contextlib import suppress
 
 import tqdm
+import socks
 import appdirs
 from telethon import TelegramClient, utils
+from telegram_export.utils import parse_proxy_str
 
 from telegram_export.dumper import Dumper
 from telegram_export.exporter import Exporter
@@ -146,6 +148,11 @@ def parse_args():
                         help='download past media instead of dumping '
                              'new data (files that were seen before '
                              'but not downloaded).')
+
+    parser.add_argument('--proxy', type=str, dest='proxy_string',
+                        help='set proxy string. '
+                             'Examples: socks5://user:password@127.0.0.1:1080'
+                             'http://localhost:8080')
     return parser.parse_args()
 
 
@@ -256,6 +263,10 @@ async def main(loop):
             formatter.format(cid, config['Dumper']['OutputDirectory'])
         return
 
+    proxy = None
+    if args.proxy_string:
+        proxy = parse_proxy_str(args.proxy_string)
+
     absolute_session_name = os.path.join(
         config['Dumper']['OutputDirectory'],
         config['TelegramAPI']['SessionName']
@@ -264,7 +275,8 @@ async def main(loop):
         absolute_session_name,
         config['TelegramAPI']['ApiId'],
         config['TelegramAPI']['ApiHash'],
-        loop=loop
+        loop=loop,
+        proxy=proxy
     ).start(config['TelegramAPI']['PhoneNumber']))
 
     if args.list_dialogs or args.search_string:
