@@ -1,6 +1,7 @@
 import unittest
 import socks
-from telegram_export.utils import *
+from telegram_export.utils import parse_proxy_str
+
 
 class TestUtils(unittest.TestCase):
 
@@ -27,13 +28,17 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(parse_proxy_str(proxy_str), proxy)
 
         proxy_str = "bad_type://login:password@127.0.0.1:1080"
-        self.assertEqual(parse_proxy_str(proxy_str), None)
+        with self.assertRaises(ValueError):
+            parse_proxy_str(proxy_str)
 
         proxy_str = "bad_type://127.0.0.1"
-        self.assertEqual(parse_proxy_str(proxy_str), None)
+        with self.assertRaises(ValueError):
+            parse_proxy_str(proxy_str)
 
         proxy_str = "bad_type:127.0.0.1"
-        self.assertEqual(parse_proxy_str(proxy_str), None)
+        with self.assertRaises(ValueError):
+            parse_proxy_str(proxy_str)
 
         proxy_str = "127.0.0.1:1080"
-        self.assertEqual(parse_proxy_str(proxy_str), None)
+        with self.assertRaises(ValueError):
+            parse_proxy_str(proxy_str)

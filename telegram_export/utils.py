@@ -232,13 +232,15 @@ def parse_proxy_str(proxy_str):
     elif proxy_type_str.lower() == "http":
         proxy_type = socks.HTTP
     else:
-        return None
+        raise ValueError("Proxy type %s is not supported" % proxy_type)
 
     host = url_parser.hostname
     port = url_parser.port
 
-    if host is None or port is None:
-        return None
+    if host is None:
+        raise ValueError("Host parsing error")
+    if port is None:
+        raise ValueError("Port parsing error")
 
     user = url_parser.username
     password = url_parser.password
