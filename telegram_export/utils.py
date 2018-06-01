@@ -3,7 +3,10 @@ import mimetypes
 
 from telethon.tl import types
 from urllib.parse import urlparse
-import socks
+try:
+    import socks
+except ImportError:
+    socks = None
 
 ENTITY_TO_TEXT = {
     types.MessageEntityPre: 'pre',
@@ -219,6 +222,8 @@ def parse_proxy_str(proxy_str):
     """
     Returns proxy from given string
     """
+    if socks == None:
+        raise Exception('Please install PySocks if you want to use a proxy')
     url_parser = urlparse(proxy_str)
     proxy_type = None
     proxy_type_str = url_parser.scheme
