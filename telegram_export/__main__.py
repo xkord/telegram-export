@@ -12,7 +12,6 @@ import re
 from contextlib import suppress
 
 import tqdm
-import socks
 import appdirs
 from telethon import TelegramClient, utils
 from telegram_export.utils import parse_proxy_str
