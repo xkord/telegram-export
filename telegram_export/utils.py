@@ -222,7 +222,7 @@ def parse_proxy_str(proxy_str):
     """
     Returns proxy from given string
     """
-    if socks == None:
+    if socks is None:
         raise Exception('Please install PySocks if you want to use a proxy')
     url_parser = urlparse(proxy_str)
     proxy_type = None
