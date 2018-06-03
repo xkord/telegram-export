@@ -150,7 +150,7 @@ def parse_args():
 
     parser.add_argument('--proxy', type=str, dest='proxy_string',
                         help='set proxy string. '
-                             'Examples: socks5://user:password@127.0.0.1:1080'
+                             'Examples: socks5://user:password@127.0.0.1:1080. '
                              'http://localhost:8080')
     return parser.parse_args()
 
@@ -261,8 +261,12 @@ async def main(loop):
         for cid in fmt_contexts:
             formatter.format(cid, config['Dumper']['OutputDirectory'])
         return
-
-    proxy = None
+    
+    try:
+        proxy = parse_proxy_str(dumper.config['Proxy'])
+    except Exception:
+        proxy = None
+    
     if args.proxy_string:
         proxy = parse_proxy_str(args.proxy_string)
 
