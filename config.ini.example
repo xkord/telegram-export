@@ -112,3 +112,4 @@ LibraryLogLevel = WARNING
 
 # Sets proxy support
 # Proxy = socks5://user:password@127.0.0.1:1080
+# Proxy = http://127.0.0.1:8080
