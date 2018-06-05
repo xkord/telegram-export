@@ -261,14 +261,10 @@ async def main(loop):
         for cid in fmt_contexts:
             formatter.format(cid, config['Dumper']['OutputDirectory'])
         return
-    
-    try:
-        proxy = parse_proxy_str(dumper.config['Proxy'])
-    except Exception:
-        proxy = None
-    
-    if args.proxy_string:
-        proxy = parse_proxy_str(args.proxy_string)
+
+    proxy = args.proxy_string or dumper.config.get('Proxy')
+    if proxy:
+        proxy = parse_proxy_str(proxy)
 
     absolute_session_name = os.path.join(
         config['Dumper']['OutputDirectory'],
